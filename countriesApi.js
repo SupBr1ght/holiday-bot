@@ -15,6 +15,6 @@ export const getHoliday = async (country) => {
     const data = response.data[0].name;
     return data;
   } catch (error) {
-    return "No info about holiday";
+    return "Some error while fetching data occurred";
   }
 };
