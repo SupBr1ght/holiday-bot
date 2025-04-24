@@ -1,17 +1,32 @@
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
+import { getHoliday } from './countriesApi.js';
 dotenv.config();
+import TelegramBot from 'node-telegram-bot-api';
 const token = process.env.TELEGRAM_TOKEN;
-const TelegramBot = require('node-telegram-bot-api');
-
+const countries = ['US', 'CA', 'GB', 'FR', 'DE', 'IT', 'ES', 'JP'];
 const bot = new TelegramBot(token, { polling: true });
-
-bot.on('message', (msg) => {
-    const chatId = msg.chat.id;
-    const text = msg.text;
-    
-    if (text === '/start') {
-        bot.sendMessage(chatId, 'Welcome to the Holiday Bot! Type /holiday to get a random holiday.');
-    } else {
-        bot.sendMessage(chatId, 'I don\'t understand that command. Type /start to see the available commands.');
+const options = {
+    reply_markup: {
+        inline_keyboard: countries.map((country) => [
+            {
+                text: country,
+                callback_data: country, // Use the country code as the callback data
+            },
+        ]),
     }
+}
+
+bot.onText(/\/start/, (msg) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, 'Welcome to the Holiday Bot! Please select a country:', options);
+});
+
+// Callback query handler
+bot.on('callback_query', async (query) => {
+    const chatId = query.message.chat.id;
+    const country = query.data; // Get the selected country from the callback data
+    // Call the getHoliday function with the selected country
+    const holiday = await getHoliday(country);
+    // Send the holiday information back to the user
+    bot.sendMessage(chatId, `The holiday in ${country} is: ${holiday}`);
 });
