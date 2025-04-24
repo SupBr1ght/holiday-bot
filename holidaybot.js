@@ -25,8 +25,15 @@ bot.onText(/\/start/, (msg) => {
 bot.on('callback_query', async (query) => {
     const chatId = query.message.chat.id;
     const country = query.data; // Get the selected country from the callback data
-    // Call the getHoliday function with the selected country
-    const holiday = await getHoliday(country);
-    // Send the holiday information back to the user
-    bot.sendMessage(chatId, `The holiday in ${country} is: ${holiday}`);
+    try {
+        // Call the getHoliday function with the selected country
+        const holiday = await getHoliday(country);
+        // Send the holiday information back to the user
+        bot.sendMessage(chatId, `The holiday in ${country} is: ${holiday}`);
+    } catch (error) {
+        bot.sendMessage(chatId, `Sorry, I couldn't retrieve the holiday for ${country}.`);
+    } finally {
+        // Close the callback query to remove the "loading" state in the Telegram client
+        bot.answerCallbackQuery(query.id);
+    }
 });
