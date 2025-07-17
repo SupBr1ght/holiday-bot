@@ -1,7 +1,7 @@
 # Holiday bot
 ## Getting started
 
-##Demo
+## Demo
 
 User: `/start`  
 Bot: ⬇️ *(shows keyboard with flags)*  
@@ -10,7 +10,7 @@ Bot: *"Today in Germany: German Unity Day 🇩🇪"*
 
 ---
 
-##Features
+## Features
 
 - Inline emoji keyboard with 4–8 countries
 - Replies with today's holiday based on the selected country
@@ -19,7 +19,7 @@ Bot: *"Today in Germany: German Unity Day 🇩🇪"*
 
 ---
 
-##How to Run
+## How to Run
 
 ```bash
 git clone https://github.com/your-username/holiday-bot.git
